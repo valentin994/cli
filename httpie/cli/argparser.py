@@ -20,7 +20,7 @@ from .constants import (
     OUTPUT_OPTIONS_DEFAULT_OFFLINE, OUTPUT_OPTIONS_DEFAULT_STDOUT_REDIRECTED,
     OUT_RESP_BODY, PRETTY_MAP, PRETTY_STDOUT_TTY_ONLY, RequestType,
     SEPARATOR_CREDENTIALS,
-    SEPARATOR_GROUP_ALL_ITEMS, SEPARATOR_GROUP_DATA_ITEMS, URL_SCHEME_RE,
+    SEPARATOR_GROUP_ALL_ITEMS, SEPARATOR_GROUP_DATA_ITEMS, URL_SCHEME_RE, HTTP_WS
 )
 from .exceptions import ParseError
 from .requestitems import RequestItems
@@ -418,6 +418,7 @@ class HTTPieArgumentParser(BaseHTTPieArgumentParser):
                 self.args.method = HTTP_POST
             else:
                 self.args.method = HTTP_GET
+            # TODO Add a check for a websocket
 
         # FIXME: False positive, e.g., "localhost" matches but is a valid URL.
         elif not re.match('^[a-zA-Z]+$', self.args.method):
@@ -451,6 +452,7 @@ class HTTPieArgumentParser(BaseHTTPieArgumentParser):
         `args.params`, and `args.files`.
 
         """
+        print("hello")
         try:
             request_items = RequestItems.from_args(
                 request_item_args=self.args.request_items,

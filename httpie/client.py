@@ -139,7 +139,6 @@ def collect_messages(
             httpie_session.remove_cookies(expired_cookies)
             httpie_session.save()
 
-
 # noinspection PyProtectedMember
 @contextmanager
 def max_headers(limit):
@@ -159,7 +158,6 @@ def build_requests_session(
     ciphers: str = None,
 ) -> requests.Session:
     requests_session = requests.Session()
-
     # Install our adapter.
     http_adapter = HTTPieHTTPAdapter()
     https_adapter = HTTPieHTTPSAdapter(
