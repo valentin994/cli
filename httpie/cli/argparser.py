@@ -452,7 +452,6 @@ class HTTPieArgumentParser(BaseHTTPieArgumentParser):
         `args.params`, and `args.files`.
 
         """
-        print("hello")
         try:
             request_items = RequestItems.from_args(
                 request_item_args=self.args.request_items,

@@ -14,7 +14,7 @@ from urllib3.util import SKIP_HEADER, SKIPPABLE_HEADERS
 
 from . import __version__
 from .adapters import HTTPieHTTPAdapter
-from .cli.constants import HTTP_OPTIONS
+from .cli.constants import HTTP_OPTIONS, HTTP_WS
 from .cli.dicts import HTTPHeadersDict
 from .cli.nested_json import unwrap_top_level_list_if_needed
 from .context import Environment
@@ -28,6 +28,7 @@ from .uploads import (
     get_multipart_data_and_content_type,
 )
 from .utils import get_expired_cookies, repr_dict
+from .websocket_client import create_connection
 
 
 urllib3.disable_warnings()
@@ -47,6 +48,11 @@ def collect_messages(
 ) -> Iterable[RequestsMessage]:
     httpie_session = None
     httpie_session_headers = None
+    if args.method == HTTP_WS:
+        print("ka")
+        create_connection(args.url)
+        print("Initiated connection")
+        return
     if args.session or args.session_read_only:
         httpie_session = get_httpie_session(
             env=env,
@@ -178,7 +184,6 @@ def build_requests_session(
             prefix=transport_plugin.prefix,
             adapter=transport_plugin.get_adapter(),
         )
-
     return requests_session
 
 
@@ -213,7 +218,6 @@ def transform_headers(
 ) -> None:
     """Apply various transformations on top of the `prepared_requests`'s
     headers to change the request prepreation behavior."""
-
     # Remove 'Content-Length' when it is misplaced by requests.
     if (
         prepared_request.method in IGNORE_CONTENT_LENGTH_METHODS
@@ -354,7 +358,6 @@ def make_request_kwargs(
             boundary=args.boundary,
             content_type=args.headers.get('Content-Type'),
         )
-
     return {
         'method': args.method.lower(),
         'url': args.url,
