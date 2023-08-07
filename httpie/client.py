@@ -49,9 +49,7 @@ def collect_messages(
     httpie_session = None
     httpie_session_headers = None
     if args.method == HTTP_WS:
-        print("ka")
-        create_connection(args.url)
-        print("Initiated connection")
+        create_connection(args.url, 0.1)
         return
     if args.session or args.session_read_only:
         httpie_session = get_httpie_session(
