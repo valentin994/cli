@@ -5,7 +5,7 @@ from websockets.uri import parse_uri
 from websockets.exceptions import InvalidURI
 
 
-def create_connection(uri, timeout: float = None) -> None:
+def create_connection(uri, timeout: float = 0.1) -> None:
     try:
         uri = parse_uri(uri)
     except InvalidURI:
@@ -14,14 +14,18 @@ def create_connection(uri, timeout: float = None) -> None:
         pass
     protocol = ClientProtocol(uri)
     sock = socket.create_connection((uri.host, uri.port))
-    connection = ClientConnection(sock, protocol, close_timeout=0.1)
+    connection = ClientConnection(sock, protocol, close_timeout=timeout)
     connection.handshake()
     send_message(connection, "hello")
 
 
 def send_message(connection: ClientConnection, message: str) -> None:
-    connection.send(message)
-
-    print(f"sent message {message}")
-    connection.close(reason="Message sent")
+    if message:
+        connection.send(message)
+        connection.close(code=1000, reason="Sent the message")
+    data = ""
+    while data != "exit()":
+        data = input()
+        connection.send(data)
+    connection.close(code=1000, reason="No more messages to be sent")
     pass
