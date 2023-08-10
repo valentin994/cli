@@ -5,6 +5,11 @@ from websockets.uri import parse_uri
 from websockets.exceptions import InvalidURI
 import threading
 
+#todo implement headers
+#todo add initial message with protocol type, handshake response, server
+class WebSocketHeaders:
+    pass
+
 
 def create_connection(uri, timeout: float = 0.1, message: str = None) -> None:
     try:
@@ -17,6 +22,8 @@ def create_connection(uri, timeout: float = 0.1, message: str = None) -> None:
     sock = socket.create_connection((uri.host, uri.port))
     connection = ClientConnection(sock, protocol, close_timeout=timeout)
     connection.handshake()
+    print(connection.protocol.__dict__)
+    print(connection.__dict__)
     send_message(connection, message)
 
 
