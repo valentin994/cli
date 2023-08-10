@@ -4,9 +4,11 @@ from websockets.sync.client import ClientConnection
 from websockets.uri import parse_uri
 from websockets.exceptions import InvalidURI
 import threading
+from .output.writer import write_message
 
 #todo implement headers
 #todo add initial message with protocol type, handshake response, server
+#todo use the write_message function to parse out the websocket handshake
 class WebSocketHeaders:
     pass
 
@@ -22,8 +24,9 @@ def create_connection(uri, timeout: float = 0.1, message: str = None) -> None:
     sock = socket.create_connection((uri.host, uri.port))
     connection = ClientConnection(sock, protocol, close_timeout=timeout)
     connection.handshake()
-    print(connection.protocol.__dict__)
-    print(connection.__dict__)
+    #print(connection.request)
+    #print(connection.protocol.__dict__)
+    #print(connection.__dict__)
     send_message(connection, message)
 
 
