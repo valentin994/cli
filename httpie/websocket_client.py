@@ -29,7 +29,7 @@ def create_connection(uri, timeout: float = 0.1, message: str = None) -> None:
     sock = socket.create_connection((uri.host, uri.port))
     connection = ClientConnection(sock, protocol, close_timeout=timeout)
     connection.handshake()
-    print(connection.protocol.__dict__)
+    #print(connection.protocol.__dict__)
     # print(connection.request)
     # print(connection.protocol.__dict__)
     # print(connection.__dict__)
